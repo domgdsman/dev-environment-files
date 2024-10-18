@@ -67,6 +67,9 @@ HIST_STAMPS="dd/mm/yyyy"
 
 # PATH
 
+# homebrew bin
+export PATH="/usr/local/bin:$PATH"
+
 # user private bin
 if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"

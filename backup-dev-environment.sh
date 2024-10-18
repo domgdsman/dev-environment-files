@@ -4,7 +4,6 @@ files=(
     "$HOME/.zprofile"
     "$HOME/.zshrc"
     "$HOME/.tmux.conf"
-    "$HOME/.tmux-wsl2.conf"
     "$HOME/.wezterm.lua"
     "$HOME/backup-dev-environment.sh"
     "$HOME/.config/nvim"
