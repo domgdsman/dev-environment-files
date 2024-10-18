@@ -5,13 +5,11 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-
 -- OS dependent constants
 
 local is_darwin <const> = wezterm.target_triple:find("darwin") ~= nil
 local is_linux <const> = wezterm.target_triple:find("linux") ~= nil
-local is_windows <const> = wezterm.target_triple:find("windows") ~=nil
-
+local is_windows <const> = wezterm.target_triple:find("windows") ~= nil
 
 -- General settings
 
@@ -21,11 +19,12 @@ config.window_close_confirmation = "NeverPrompt"
 
 config.enable_tab_bar = false
 config.enable_scroll_bar = false
+config.swallow_mouse_click_on_window_focus = true -- IMPORTANT: Do not propagate mouse click on window focus change
 
+-- IMPORTANT: Inside tmux have to hold SHIFT key down when clicking on a link to open it in the browser
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 config.max_fps = 120
-
 
 -- Keybinds
 
@@ -38,16 +37,16 @@ config.keys = {
 		mods = "ALT",
 		action = wezterm.action.ToggleFullScreen,
 	},
+	{
+		key = "B",
+		mods = ctrl_key,
+		action = wezterm.action.EmitEvent("toggle-opacity"),
+	},
 	-- Copy & paste
 	{
 		key = "v",
 		mods = ctrl_key,
 		action = wezterm.action.PasteFrom("Clipboard"),
-	},
-	{
-		key = "v",
-		mods = ctrl_key,
-		action = wezterm.action.PasteFrom("PrimarySelection"),
 	},
 	-- Delete
 	{
@@ -130,12 +129,11 @@ config.mouse_bindings = {
 	},
 }
 
-
 -- Terminal emulation & WSL2
 
 if is_windows then
 	local wsl_domains = wezterm.default_wsl_domains()
-	
+
 	for idx, dom in ipairs(wsl_domains) do
 		if dom.name == "WSL:ubuntu2204" then
 			dom.default_prog = { "zsh", "-c", "source .profile && exec zsh -i" }
@@ -145,7 +143,6 @@ if is_windows then
 	config.default_domain = "WSL:ubuntu2204"
 end
 
-
 -- Layout & style
 
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
@@ -153,8 +150,18 @@ config.font_size = 16
 
 config.initial_rows = 32
 config.initial_cols = 120
+config.window_background_opacity = 1.0
 
-config.window_background_opacity = 0.8
+-- toggle window background opacity
+wezterm.on("toggle-opacity", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	if not overrides.window_background_opacity then
+		overrides.window_background_opacity = 0.6
+	else
+		overrides.window_background_opacity = nil
+	end
+	window:set_config_overrides(overrides)
+end)
 
 config.colors = {
 	foreground = "#CBE0F0",

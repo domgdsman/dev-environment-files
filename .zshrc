@@ -28,15 +28,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Oh My Zsh
-export ZSH="$HOME/.oh-my-zsh"
+# Set language
 export LANG=en_US.UTF-8
 
+# Oh My Zsh
+export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
@@ -45,12 +44,10 @@ zstyle ':omz:update' frequency 30  # how often to auto-update (in days)
 plugins=(zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Accept suggestions with tab instead of right arrow
-ZSH_AUTOSUGGEST_ACCEPT_WIDGETS[$ZSH_AUTOSUGGEST_ACCEPT_WIDGETS[(i)forward-char]]=()
-bindkey '^I' autosuggest-accept
+# ZSH_AUTOSUGGEST_ACCEPT_WIDGETS[$ZSH_AUTOSUGGEST_ACCEPT_WIDGETS[(i)forward-char]]=()
+# bindkey '^I' autosuggest-accept
 
 
 # history
@@ -121,7 +118,7 @@ poetry() {
 alias gsu='git stash push -u -- $(git ls-files --modified --others --exclude-standard)'  # git stash unstaged files
 alias gcm='function _gcm(){ git add . && git commit -m "$1"; }; _gcm'  # git add + commit with message
 alias gcmp='function _gcmp(){ git add . && git commit -m "$1" && git push; }; _gcmp'  # git add + commit with message + push
-
+alias gclean='git branch | grep -vE "^\*|^\s*(master|main|develop)$" | xargs git branch -D'  # delete all local branches except master, main, develop
 
 # Load applications
 
