@@ -121,7 +121,7 @@ poetry() {
 alias gsu='git stash push -u -- $(git ls-files --modified --others --exclude-standard)'  # git stash unstaged files
 alias gcm='function _gcm(){ git add . && git commit -m "$1"; }; _gcm'  # git add + commit with message
 alias gcmp='function _gcmp(){ git add . && git commit -m "$1" && git push; }; _gcmp'  # git add + commit with message + push
-alias gclean='git branch | grep -vE "^\*|^\s*(master|main|develop)$" | xargs git branch -D'  # delete all local branches except master, main, develop
+alias gclean='git branch | grep -vE "^\*|^\s*(master|main)$" | xargs git branch -D'  # delete all local branches except master, main, develop
 
 # Load applications
 

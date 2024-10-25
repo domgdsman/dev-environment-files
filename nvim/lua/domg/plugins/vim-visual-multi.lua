@@ -2,9 +2,7 @@ return {
   "mg979/vim-visual-multi",
   config = function()
     -- keybinds
-    vim.g.VM_maps = {
-      ["Add Cursor Up"] = "<M-Up>",
-      ["Add Cursor Down"] = "<M-Down>",
-    }
+    vim.keymap.set("n", "<M-Down>", "<Plug>(VM-Add-Cursor-Down)")
+    vim.keymap.set("n", "<M-Up>", "<Plug>(VM-Add-Cursor-Up)")
   end,
 }

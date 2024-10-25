@@ -22,7 +22,42 @@ config.enable_scroll_bar = false
 config.swallow_mouse_click_on_window_focus = true -- IMPORTANT: Do not propagate mouse click on window focus change
 
 -- IMPORTANT: Inside tmux have to hold SHIFT key down when clicking on a link to open it in the browser
-config.hyperlink_rules = wezterm.default_hyperlink_rules()
+config.hyperlink_rules = {
+	-- Matches: a URL in parens: (URL)
+	{
+		regex = "\\((\\w+://\\S+)\\)",
+		format = "$1",
+		highlight = 1,
+	},
+	-- Matches: a URL in brackets: [URL]
+	{
+		regex = "\\[(\\w+://\\S+)\\]",
+		format = "$1",
+		highlight = 1,
+	},
+	-- Matches: a URL in curly braces: {URL}
+	{
+		regex = "\\{(\\w+://\\S+)\\}",
+		format = "$1",
+		highlight = 1,
+	},
+	-- Matches: a URL in angle brackets: <URL>
+	{
+		regex = "<(\\w+://\\S+)>",
+		format = "$1",
+		highlight = 1,
+	},
+	-- Then handle URLs not wrapped in brackets
+	{
+		regex = "\\b\\w+://\\S+[/a-zA-Z0-9-]+", -- modified: removed `)` which was considered part of the URL
+		format = "$0",
+	},
+	-- implicit mailto link
+	{
+		regex = "\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b",
+		format = "mailto:$0",
+	},
+}
 
 config.max_fps = 120
 
@@ -96,12 +131,17 @@ config.keys = {
 
 -- Windows-specific controls
 if is_windows then
-	-- Exit
-	table.insert(config.keys, {
-		key = "F4",
-		mods = "ALT",
-		action = wezterm.action.CloseCurrentPane({ confirm = false }),
-	})
+	-- Define multiple key mappings
+	local key_mappings = {
+		-- Exit
+		{ key = "F4", mods = "ALT", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
+	}
+
+	-- Insert each key mapping into config.keys
+	for _, mapping in ipairs(key_mappings) do
+		table.insert(config.keys, mapping)
+	end
+
 	-- Solve duplicate keybind on CTRL + C
 	table.insert(config.keys, {
 		key = "c",
