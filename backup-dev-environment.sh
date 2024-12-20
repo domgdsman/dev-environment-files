@@ -1,10 +1,15 @@
+# Windows username
+win_username=$(powershell.exe -Command '[System.Environment]::UserName' | tr -d '\r')
+
 # Define source files
 files=(
     "$HOME/.profile"
     "$HOME/.zprofile"
     "$HOME/.zshrc"
     "$HOME/.tmux.conf"
+    "$HOME/.tmux-wsl2.conf"
     "$HOME/.wezterm.lua"
+    "/mnt/c/Users/$win_username/.wezterm.lua"
     "$HOME/backup-dev-environment.sh"
     "$HOME/.config/nvim"
 )

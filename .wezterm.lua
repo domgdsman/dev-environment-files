@@ -83,6 +83,11 @@ config.keys = {
 		mods = ctrl_key,
 		action = wezterm.action.PasteFrom("Clipboard"),
 	},
+	{
+		key = "v",
+		mods = ctrl_key,
+		action = wezterm.action.PasteFrom("PrimarySelection"),
+	},
 	-- Delete
 	{
 		key = "Backspace",
@@ -175,18 +180,18 @@ if is_windows then
 	local wsl_domains = wezterm.default_wsl_domains()
 
 	for idx, dom in ipairs(wsl_domains) do
-		if dom.name == "WSL:ubuntu2204" then
+		if dom.name == "WSL:Ubuntu-22.04" then
 			dom.default_prog = { "zsh", "-c", "source .profile && exec zsh -i" }
 		end
 	end
 	config.wsl_domains = wsl_domains
-	config.default_domain = "WSL:ubuntu2204"
+	config.default_domain = "WSL:Ubuntu-22.04"
 end
 
 -- Layout & style
 
-config.font = wezterm.font("MesloLGS Nerd Font Mono")
-config.font_size = 16
+config.font = wezterm.font("MesloLGS NF")
+config.font_size = 12.0
 
 config.initial_rows = 32
 config.initial_cols = 120
