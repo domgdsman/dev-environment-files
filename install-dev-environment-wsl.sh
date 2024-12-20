@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Disclaimer
 echo "This script will download and install several packages from the internet. Proceed? (y/n)"
 read -r response
@@ -8,17 +6,25 @@ if [ "$response" != "y" ]; then
     exit 0
 fi
 
+
 # Windows username
 win_username=$(powershell.exe -Command '[System.Environment]::UserName' | tr -d '\r')
+
 
 # Update packages
 echo "Updating packages..."
 sudo apt update
 sudo apt upgrade -y
 
+
 # Locale
-sudo locale-gen en_US.UTF-8
-sudo dpkg-reconfigure locales
+if [ "$(env | grep -w 'LANG=en_US.UTF-8')" ] && [ "$(env | grep -w 'LC_ALL=en_US.UTF-8')" ]; then
+    echo "Locale is already set to en_US.UTF-8."
+else
+    echo "Setting locale to en_US.UTF-8..."
+    sudo locale-gen en_US.UTF-8
+    sudo dpkg-reconfigure locales
+fi
 
 
 # Install packages
@@ -41,7 +47,7 @@ fi
 
 
 # nvm
-if [ -x "$(command -v nvm)" ]; then
+if [ -d "$HOME/.nvm" ]; then
     echo "nvm is already installed."
 else
     echo "Installing nvm..."
@@ -127,6 +133,53 @@ else
     sudo apt install tmux -y
 fi
 
+
+# tpm (tmux plugin manager)
+if [ -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "tpm is already installed."
+else
+    echo "Installing tpm..."
+    mkdir -p "$HOME/.tmux/plugins"
+    git clone https://github.com/tmux-plugins/tpm.git "$HOME/.tmux/plugins/tpm"
+fi
+
+
+# tmux-resurrect
+if [ -d "$HOME/.tmux/plugins/tmux-resurrect" ]; then
+    echo "tmux-resurrect is already installed."
+else
+    echo "Installing tmux-resurrect..."
+    git clone https://github.com/tmux-plugins/tmux-resurrect.git "$HOME/.tmux/plugins/tmux-resurrect"
+fi
+
+
+# tmux-continuum
+if [ -d "$HOME/.tmux/plugins/tmux-continuum" ]; then
+    echo "tmux-continuum is already installed."
+else
+    echo "Installing tmux-continuum..."
+    git clone https://github.com/tmux-plugins/tmux-continuum.git "$HOME/.tmux/plugins/tmux-continuum"
+fi
+
+
+# vim-tmux-navigator
+if [ -d "$HOME/.tmux/plugins/vim-tmux-navigator" ]; then
+    echo "vim-tmux-navigator is already installed."
+else
+    echo "Installing vim-tmux-navigator..."
+    git clone https://github.com/christoomey/vim-tmux-navigator.git "$HOME/.tmux/plugins/vim-tmux-navigator"
+fi
+
+
+# tmux-tokyo-night
+if [ -d "$HOME/.tmux/plugins/tmux-tokyo-night" ]; then
+    echo "tmux-tokyo-night is already installed."
+else
+    echo "Installing tmux-tokyo-night..."
+    git clone https://github.com/fabioluciano/tmux-tokyo-night.git "$HOME/.tmux/plugins/tmux-tokyo-night"
+fi
+
+
 # neovim
 if [ -x "$(command -v nvim)" ]; then
     echo "Neovim is already installed."
@@ -147,6 +200,18 @@ else
     unzip /tmp/win32yank-x64.zip -d "/mnt/c/Users/$win_username/AppData/Local/win32yank"
 fi
 powershell.exe -Command '$path=[Environment]::GetEnvironmentVariable("Path", "User"); if (-not $path.Contains("$env:USERPROFILE\AppData\Local\win32yank")) { [Environment]::SetEnvironmentVariable("Path", $path + ";$env:USERPROFILE\AppData\Local\win32yank", "User") }'
+
+
+# lazygit
+if [ -x "$(command -v lazygit)" ]; then
+    echo "lazygit is already installed."
+else
+    echo "Installing lazygit..."
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+    curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
+    sudo install /tmp/lazygit -D -t /usr/local/bin/
+fi
 
 
 # cleanup
