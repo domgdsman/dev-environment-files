@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Windows username
 win_username=$(powershell.exe -Command '[System.Environment]::UserName' | tr -d '\r')
 

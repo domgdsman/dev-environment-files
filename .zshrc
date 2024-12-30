@@ -10,13 +10,14 @@ echo "Starting interactive shell. Sourcing ~/.zshrc"
 if [[ -f ${PWD}/.venv/bin/activate ]]; then
   echo "Activating virtual environment found in project: ${PWD}/.venv/bin/activate"
   source ${PWD}/.venv/bin/activate
+fi
 
-  if [[ -f ${PWD}/.env ]]; then
-    echo "Loading environment variables from .env file"
-    set -a
-    source ${PWD}/.env
-    set +a
-  fi
+# if there is an .env file, load it
+if [[ -f ${PWD}/.env ]]; then
+  echo "Loading environment variables from .env file"
+  set -a
+  source ${PWD}/.env
+  set +a
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -28,6 +29,9 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Color
+export TERM="xterm-256color"
 
 # Set language
 export LANG=en_US.UTF-8
