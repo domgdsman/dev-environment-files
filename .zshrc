@@ -30,12 +30,14 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Color
-export TERM="xterm-256color"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Color
+  export TERM="xterm-256color"
 
-# Set language
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+  # Set language
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+fi
 
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
@@ -92,8 +94,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_RUNTIME_DIR="/tmp/"
 
 # Set ssl cert request bundle for python & pip
-export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+  export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+fi
 
 # neovim
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
