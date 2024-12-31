@@ -32,6 +32,7 @@ return {
         "yamlls",
         "jsonls",
         "rust_analyzer",
+        "wgsl_analyzer",
       },
     })
 
