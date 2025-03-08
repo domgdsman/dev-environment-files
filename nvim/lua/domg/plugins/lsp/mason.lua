@@ -31,6 +31,10 @@ return {
         "pyright",
         "yamlls",
         "jsonls",
+        "ts_ls",
+        "html",
+        "cssls",
+        "tailwindcss",
         "rust_analyzer",
         "wgsl_analyzer",
       },
@@ -44,6 +48,7 @@ return {
         "black",
         "pylint",
         "yamllint",
+        "eslint",
       },
     })
   end,

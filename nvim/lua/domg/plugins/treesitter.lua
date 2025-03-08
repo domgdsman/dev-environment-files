@@ -12,7 +12,7 @@ return {
         enable = true,
       },
       -- enable indentation
-      indent = { enable = true },
+      -- indent = { enable = true }, -- had to disable this because it was causing issues with Python
       -- ensure these language parsers are installed
       ensure_installed = {
         "python",

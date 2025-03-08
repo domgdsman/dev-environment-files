@@ -147,3 +147,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # Secrets
 source ~/.secrets.env
+
+# pnpm
+export PNPM_HOME="/Users/domgdsman/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

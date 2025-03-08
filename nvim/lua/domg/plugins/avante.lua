@@ -73,7 +73,10 @@ return {
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    --- The below dependencies are optional,
+    --- The below dependencies are optional
+    "echasnovski/mini.pick", -- for file_selector provider mini.pick
+    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
     "zbirenbaum/copilot.lua", -- for providers='copilot'
     {
@@ -89,7 +92,7 @@ return {
             insert_mode = true,
           },
           -- required for Windows users
-          use_absolute_path = true,
+          -- use_absolute_path = true,
         },
       },
     },

@@ -13,6 +13,17 @@ opt.autoindent = true -- copy indent from current line when starting new one
 
 opt.wrap = false
 
+-- Set indentation specifically for Python files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.autoindent = true
+  end,
+})
+
 -- search settings
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive

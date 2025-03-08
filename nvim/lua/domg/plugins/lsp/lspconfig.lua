@@ -1,3 +1,17 @@
+-- Toggle diagnostics
+local diagnostics_active = true
+
+local function toggle_diagnostics()
+  diagnostics_active = not diagnostics_active
+  if diagnostics_active then
+    vim.diagnostic.enable()
+    vim.notify("Diagnostics enabled", vim.log.levels.INFO)
+  else
+    vim.diagnostic.enable(false)
+    vim.notify("Diagnostics disabled", vim.log.levels.INFO)
+  end
+end
+
 return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
@@ -64,6 +78,9 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+        opts.desc = "Toggle diagnostics"
+        keymap.set("n", "<leader>xt", toggle_diagnostics, opts) -- toggle diagnostics
 
         opts.desc = "Show LSP settings"
         keymap.set("n", "<leader>ri", function()
@@ -202,6 +219,39 @@ return {
           },
         }, "jsonls")
         lspconfig["jsonls"].setup(opts)
+      end,
+      ["cssls"] = function()
+        local opts = common_setup({
+          on_attach = function(client, bufnr)
+            -- Disable validation for Tailwind CSS
+            client.server_capabilities.documentFormattingProvider = false
+          end,
+          settings = {
+            css = {
+              validate = false, -- Disable CSS validation for Tailwind-specific rules
+            },
+            less = { validate = true },
+            scss = { validate = true },
+          },
+        }, "cssls")
+        lspconfig["cssls"].setup(opts)
+      end,
+      ["tailwindcss"] = function()
+        local opts = common_setup({
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  { "clsx\\(([^)]*)\\)", "'([^']*)'" }, -- clsx support
+                  { "cn\\(([^)]*)\\)", "'([^']*)'" }, -- shadcn classnames support
+                  { "classnames\\(([^)]*)\\)", "'([^']*)'" }, -- classnames support
+                },
+              },
+            },
+          },
+          filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        }, "tailwindcss")
+        lspconfig["tailwindcss"].setup(opts)
       end,
     })
   end,
